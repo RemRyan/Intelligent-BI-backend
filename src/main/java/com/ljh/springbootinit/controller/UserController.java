@@ -159,7 +159,7 @@ public class UserController {
     }
 
     /**
-     * 更新用户
+     * 更新用户（仅管理员）
      *
      * @param userUpdateRequest
      * @param request

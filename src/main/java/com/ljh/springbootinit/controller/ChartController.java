@@ -277,7 +277,7 @@ public class ChartController {
         User loginUser = userService.getLoginUser(request);
         // 限流判断，每个用户一个限流器
         redisLimiterManager.doRateLimit("genChartByAi_" + loginUser.getId());
-        // 无需写 prompt，直接调用现有模型，https://www.yucongming.com，公众号搜【鱼聪明AI】
+        // 无需写 prompt，使用鱼聪明AI，直接调用现有模型
 //        final String prompt = "你是一个数据分析师和前端开发专家，接下来我会按照以下固定格式给你提供内容：\n" +
 //                "分析需求：\n" +
 //                "{数据分析的需求或者目标}\n" +
@@ -291,6 +291,8 @@ public class ChartController {
         long biModelId = 1659171950288818178L;
         // 分析需求：
         // 分析网站用户的增长情况
+        // 请使用
+        // 饼图
         // 原始数据：
         // 日期,用户数
         // 1号,10
@@ -329,7 +331,7 @@ public class ChartController {
         chart.setStatus(String.valueOf(ChartStatusEnum.SUCCEED.getValue()));
         // 处理标签
         try {
-            String tag= URLDecoder.decode( tags , "UTF-8" );
+            String tag= URLDecoder.decode( tags , "UTF-8" ); // 将tags字段解码为UTF-8的字符串
             chart.setTags(tag);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -347,9 +349,9 @@ public class ChartController {
         String[] dataLines = Arrays.copyOfRange(lines, 1, lines.length); // 获取除第一行外的所有数据行
 
         String firstLine = lines[0];
-        String[] data = firstLine.split(",");
+        String[] data = firstLine.split(","); // 获取数据的各个字段
         try {
-            String tableName = "chart_" + newId; // 假设 chart_id 是表名的一部分
+            String tableName = "chart_" + newId;
             Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/intelligent_bi", "root", "123456");
             Statement stmt = conn.createStatement();
 
@@ -478,7 +480,7 @@ public class ChartController {
                 handleChartUpdateError(chart.getId(), "更新图标执行中状态失败");
                 return;
             }
-//             调用 Ai
+            // 调用 Ai
             String result = aiManager.doChat(biModelId, userInput.toString());
             String[] splits = result.split("【【【【【");
             if (splits.length < 3) {
@@ -578,7 +580,7 @@ public class ChartController {
         User loginUser = userService.getLoginUser(request);
         // 限流判断，每个用户一个限流器
         redisLimiterManager.doRateLimit("genChartByAi_" + loginUser.getId());
-        // 无需写 prompt，直接调用现有模型，https://www.yucongming.com，公众号搜【鱼聪明AI】
+        // 无需写 prompt，直接调用现有模型
 //        final String prompt = "你是一个数据分析师和前端开发专家，接下来我会按照以下固定格式给你提供内容：\n" +
 //                "分析需求：\n" +
 //                "{数据分析的需求或者目标}\n" +

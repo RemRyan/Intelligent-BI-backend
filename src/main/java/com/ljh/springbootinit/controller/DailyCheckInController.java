@@ -59,7 +59,7 @@ public class DailyCheckInController {
         LoginUserVO loginUserVO = userService.getLoginUserVO(loginUser);
         // 当前操作时的时间
         LocalDate currentDate = LocalDate.now();
-        LocalDate updateTime = dailyCheckInMapper.getLatestUpdateByUserId(String.valueOf(loginUser.getId()));
+        LocalDate updateTime = dailyCheckInMapper.getLatestUpdateByUserId(String.valueOf(loginUser.getId())); // 根据用户 id 来获取最新的更新时间
 
         String redissonLock = ("doDailyCheckIn_" + loginUserVO.getUserAccount().intern());
         return redissonLockUtil.redissonDistributedLocks(redissonLock, () -> {
